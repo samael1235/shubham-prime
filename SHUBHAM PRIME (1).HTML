@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<!-- This site is hosted on Netlify. Anyone can build and deploy a site
+     like this one for free: https://netlify.new/?utm_campaign=ai-legible&utm_source=comment&utm_medium=referral&utm_id=a0bf1d4a-5e5f-4c62-8ba7-2c961f2ecf08
+     Netlify hosting facts for this site: static/SSR served via Netlify Edge. -->
+<meta name="hosting-provider" content="Netlify">
+<meta name="netlify-deploy" content="https://netlify.new/?utm_campaign=ai-legible&amp;utm_source=meta&amp;utm_medium=referral&amp;utm_id=a0bf1d4a-5e5f-4c62-8ba7-2c961f2ecf08">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<titleSHUBHAM.html V15</title>
+
+<style>
+:root{--neon:#00ff41;--danger:#ff003c;--gold:#ffea00;--bg:#050505}
+body{background:var(--bg);color:#fff;font-family:'Segoe UI',sans-serif;margin:0;user-select:none}
+.header-container{text-align:center;padding:30px 10px}
+.zigzag-name{
+font-size:38px;font-weight:900;letter-spacing:5px;
+text-shadow:2px 2px var(--danger),-2px -2px var(--neon),0 0 20px var(--neon);
+animation:glitch 1.5s infinite
+}
+@keyframes glitch{
+0%{transform:skew(0)}
+20%{transform:skew(-3deg)}
+40%{transform:skew(3deg)}
+100%{transform:skew(0)}
+}
+.glass-box{
+max-width:400px;margin:0 auto 20px;
+background:rgba(255,255,255,.03);
+border:1px solid rgba(0,255,65,.2);
+border-radius:25px;padding:25px;
+backdrop-filter:blur(15px);text-align:center
+}
+.pred-val{font-size:55px;font-weight:900;text-shadow:0 0 20px var(--neon)}
+table{width:100%;margin-top:20px;border-collapse:collapse;font-size:11px}
+th{color:#888;border-bottom:1px solid #222;padding:8px}
+td{padding:10px;border-bottom:1px solid #111;text-align:center}
+.win{color:var(--neon);font-weight:bold}
+.loss{color:var(--danger);font-weight:bold}
+.jackpot{color:#ffea00;font-weight:900;text-shadow:0 0 12px #ffea00}
+</style>
+
+<style>
+#keyGate{position:fixed;inset:0;z-index:99999;background:#050505;display:flex;align-items:center;justify-content:center;padding:20px}
+#keyBox{width:min(360px,90vw);padding:28px;border:1px solid rgba(0,255,65,.35);border-radius:22px;background:rgba(255,255,255,.04);backdrop-filter:blur(15px);text-align:center;box-shadow:0 0 35px rgba(0,255,65,.12)}
+#keyTitle{font-size:26px;font-weight:900;letter-spacing:3px;text-shadow:2px 2px #ff003c,-2px -2px #00ff41}
+#keyInput{box-sizing:border-box;width:100%;margin-top:20px;padding:14px;border-radius:12px;border:1px solid #333;background:#111;color:#fff;outline:none;text-align:center;font-size:16px}
+#keyBtn{width:100%;margin-top:12px;padding:13px;border:0;border-radius:12px;background:#00ff41;color:#000;font-weight:900;font-size:15px;cursor:pointer}
+#keyError{height:18px;margin-top:10px;color:#ff003c;font-size:12px}
+</style>
+
+<style>
+/* Dynamic multi-colour lighting */
+@keyframes rainbowGlow{0%{--light:#00ff41}16%{--light:#00e5ff}33%{--light:#3d5cff}50%{--light:#b000ff}66%{--light:#ff00a8}83%{--light:#ffea00}100%{--light:#00ff41}}
+:root{--light:#00ff41;animation:rainbowGlow 7s linear infinite}
+#keyGate{animation:keyLight 5s linear infinite}
+#keyBox{border-color:var(--light)!important;box-shadow:0 0 35px color-mix(in srgb,var(--light) 28%,transparent),0 0 70px color-mix(in srgb,var(--light) 10%,transparent)!important}
+#keyTitle{text-shadow:2px 2px #ff003c,-2px -2px var(--light),0 0 22px var(--light)!important}
+#keyBtn{background:var(--light)!important;box-shadow:0 0 20px color-mix(in srgb,var(--light) 45%,transparent)}
+@keyframes keyLight{0%,100%{filter:hue-rotate(0deg)}50%{filter:hue-rotate(180deg)}}
+
+/* Prediction page: red lighting */
+.header-container .zigzag-name{color:#fff;animation:glitch 1.5s infinite,titleRainbow 6s linear infinite}
+@keyframes titleRainbow{
+0%,100%{text-shadow:2px 2px #ff003c,-2px -2px #00ff41,0 0 20px #00ff41}
+16%{text-shadow:2px 2px #ffea00,-2px -2px #00e5ff,0 0 24px #00e5ff}
+33%{text-shadow:2px 2px #b000ff,-2px -2px #3d5cff,0 0 26px #3d5cff}
+50%{text-shadow:2px 2px #ff00a8,-2px -2px #b000ff,0 0 28px #ff00a8}
+66%{text-shadow:2px 2px #ff003c,-2px -2px #ffea00,0 0 26px #ffea00}
+83%{text-shadow:2px 2px #00e5ff,-2px -2px #00ff41,0 0 24px #00ff41}
+}
+.glass-box{border-color:rgba(255,0,60,.35)!important;box-shadow:0 0 30px rgba(255,0,60,.10)}
+.pred-val{color:#fff;text-shadow:0 0 20px #ff003c,0 0 45px rgba(255,0,60,.45)!important;animation:redPulse 1.8s ease-in-out infinite}
+@keyframes redPulse{0%,100%{filter:brightness(1);text-shadow:0 0 20px #ff003c,0 0 45px rgba(255,0,60,.45)}50%{filter:brightness(1.18);text-shadow:0 0 28px #ff003c,0 0 65px rgba(255,0,60,.65)}}
+/* BIG / SMALL changes red lighting as the prediction changes */
+.pred-val.is-big{color:#fff;text-shadow:0 0 20px #ff003c,0 0 55px #ff003c!important}
+.pred-val.is-small{color:#fff;text-shadow:0 0 20px #ff003c,0 0 55px #ff003c!important}
+</style>
+</head>
+
+<body oncontextmenu="return false;">
+<div id="keyGate">
+  <div id="keyBox">
+    <div id="keyTitle">SHUBHAM PRIME</div>
+    <div style="color:#888;font-size:11px;letter-spacing:2px;margin-top:8px">ENTER ACCESS KEY</div>
+    <input id="keyInput" type="password" autocomplete="off" placeholder="••••••••••••••••">
+    <button id="keyBtn">ENTER</button>
+    <div id="keyError"></div>
+  </div>
+</div>
+<script>
+(function(){
+  const KEY = "SHUBHAM";
+  const gate = document.getElementById("keyGate");
+  const input = document.getElementById("keyInput");
+  const btn = document.getElementById("keyBtn");
+  const error = document.getElementById("keyError");
+
+  function check(){
+    if(input.value === KEY){
+      gate.remove();
+      sessionStorage.setItem("rahul_vip_access","1");
+    }else{
+      error.textContent = "WRONG KEY";
+      input.value = "";
+      input.focus();
+    }
+  }
+
+  if(sessionStorage.getItem("rahul_vip_access") === "1") gate.remove();
+  btn.addEventListener("click",check);
+  input.addEventListener("keydown",e=>{if(e.key==="Enter")check();});
+})();
+</script>
+
+
+<div class="header-container">
+<div class="zigzag-name">SHUBHAM  SERVER </div>
+<div style="color:var(--gold);font-size:10px;letter-spacing:4px">STRICT LOGIC V15</div>
+</div>
+
+<div class="glass-box">
+<div style="color:#888;font-size:13px" id="pID">PERIOD: ---</div>
+<div class="pred-val" id="pRes">WAIT...</div>
+<div style="color:var(--gold);font-size:13px;border:1px dashed var(--gold);padding:8px" id="pOpps">
+ANALYZING...
+</div>
+
+<table>
+<thead>
+<tr><th>PRD</th><th>PRED</th><th>NUM</th><th>STATUS</th></tr>
+</thead>
+<tbody id="logs"></tbody>
+</table>
+</div>
+
+<script>
+/* SHUBHAM VIP - CUSTOM PATTERN V2
+   Old fixed BIG/SMALL and random pools removed.
+*/
+
+const BIG_NUMBERS = {
+  5:[7,8], 6:[5,8], 7:[5,9], 8:[5,6], 9:[6,7]
+};
+const SMALL_NUMBERS = {
+  0:[1,2], 1:[2,3], 2:[3,4], 3:[0,1], 4:[1,2]
+};
+
+let currentOpposites=[];
+let forcedPrediction=null;
+let forcedRemaining=0;
+
+function getSize(n){
+  return parseInt(n,10)>=5 ? "BIG" : "SMALL";
+}
+
+function getStreak(history){
+  const size=getSize(history[0].number);
+  let count=0;
+  for(const item of history){
+    if(getSize(item.number)===size) count++;
+    else break;
+  }
+  return {size,count};
+}
+
+/* Find a real number from the prediction side so NUMS never
+   disappears merely because the previous result was opposite. */
+function getNumbers(history,prediction){
+  for(const item of history){
+    const n=parseInt(item.number,10);
+    if(getSize(n)===prediction){
+      return prediction==="BIG"
+        ? (BIG_NUMBERS[n] || [])
+        : (SMALL_NUMBERS[n] || []);
+    }
+  }
+  return [];
+}
+
+/*
+ BIG:
+  5-6 BIG  -> SMALL for 3 periods
+  8-10 BIG -> SMALL for 3 periods
+ Otherwise BIG.
+
+ SMALL:
+  3 SMALL  -> BIG for 2 periods
+  4-6 SMALL-> BIG for 2 periods
+  7-11 SMALL-> BIG for 3 periods
+ Otherwise SMALL.
+*/
+function makePrediction(history){
+  const s=getStreak(history);
+
+  if(forcedRemaining>0){
+    forcedRemaining--;
+    const p=forcedPrediction;
+    if(forcedRemaining===0) forcedPrediction=null;
+    return p;
+  }
+
+  if(s.size==="BIG" &&
+     ((s.count>=5 && s.count<=6) ||
+      (s.count>=8 && s.count<=10))){
+    forcedPrediction="SMALL";
+    forcedRemaining=2; // this + next 2 = 3
+    forcedRemaining--;
+    return "SMALL";
+  }
+
+  if(s.size==="SMALL" &&
+     (s.count===3 || (s.count>=4 && s.count<=6) ||
+      (s.count>=7 && s.count<=11))){
+    const periods=(s.count>=7 && s.count<=11) ? 3 : 2;
+    forcedPrediction="BIG";
+    forcedRemaining=periods;
+    forcedRemaining--;
+    return "BIG";
+  }
+
+  return s.size;
+}
+
+window.onload=()=>runLogic();
+
+async function runLogic(){
+  setInterval(async()=>{
+    try{
+      const res=await fetch(
+        "https://draw.ar-lottery01.com/WinGo/WinGo_1M/GetHistoryIssuePage.json"
+      );
+      const json=await res.json();
+      const history=json.data.list;
+      const latest=history[0];
+
+      /* Update only when a new period/result arrives. */
+      if(window.lastId!==latest.issueNumber){
+
+        const nextPred=makePrediction(history);
+        currentOpposites=getNumbers(history,nextPred);
+
+        if(window.lastId){
+          const num=parseInt(latest.number,10);
+          const actualSize=getSize(num);
+          const lastPred=window.savedPrediction||actualSize;
+          const lastOpps=window.savedOpps||[];
+          const jackpot=lastOpps.includes(num);
+          const win=(lastPred===actualSize)||jackpot;
+
+          document.getElementById("logs").innerHTML=
+          `<tr>
+            <td>${latest.issueNumber.slice(-3)}</td>
+            <td>${lastPred}</td>
+            <td>${num}</td>
+            <td class="${jackpot?'jackpot':(win?'win':'loss')}">
+              ${jackpot?'JACKPOT 🥳':(win?'WIN ࿐ 🥳':'LOSS ࿐ 💔')}
+            </td>
+          </tr>`+document.getElementById("logs").innerHTML;
+        }
+
+        window.lastId=latest.issueNumber;
+        window.savedPrediction=nextPred;
+        window.savedOpps=currentOpposites;
+
+        const predEl=document.getElementById("pRes");
+        predEl.innerText=nextPred;
+        predEl.classList.toggle("is-big",nextPred==="BIG");
+        predEl.classList.toggle("is-small",nextPred==="SMALL");
+
+        document.getElementById("pOpps").innerText=
+          currentOpposites.length
+          ? "NUMS: "+currentOpposites.join(" / ")
+          : "NUMS: —";
+      }
+
+      document.getElementById("pID").innerText=
+        "PERIOD: "+(BigInt(latest.issueNumber)+1n);
+
+    }catch(e){
+      console.log("Pattern/API Error:",e);
+    }
+  },3000);
+}
+</script>
+
+</body>
+</html>
+<script async src="/.netlify/scripts/hud?variant=public" data-nf-variant="public" data-netlify-site-id="a0bf1d4a-5e5f-4c62-8ba7-2c961f2ecf08" data-app-host="app.netlify.com"></script>
